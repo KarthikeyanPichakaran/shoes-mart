@@ -10,6 +10,7 @@ Complete step-by-step instructions to get your Kickd shoe store running locally 
 - A GitHub account with access to `https://github.com/KarthikeyanPichakaran/shoes-mart`
 - A Supabase account ([supabase.com](https://supabase.com))
 - A Razorpay account ([razorpay.com](https://razorpay.com))
+- A Resend account ([resend.com](https://resend.com)) — for order confirmation emails
 
 ---
 
@@ -61,7 +62,16 @@ Complete step-by-step instructions to get your Kickd shoe store running locally 
 
 ---
 
-## Step 4 — Set Up Razorpay
+## Step 4 — Set Up Resend (Order Confirmation Emails)
+
+1. Sign up at [resend.com](https://resend.com)
+2. Go to **API Keys** → **Create API Key** → copy it (starts with `re_`)
+3. **For testing**: use `onboarding@resend.dev` as the sender — emails will only be delivered to your own verified Resend email address
+4. **For production**: go to **Domains** → add and verify your domain (e.g. `yourdomain.com`) → then use `Kickd <orders@yourdomain.com>` as the sender to send to any address
+
+---
+
+## Step 5 — Set Up Razorpay
 
 1. Sign up at [razorpay.com](https://razorpay.com) and complete KYC (you can start in test mode without full KYC)
 2. Go to **Settings → API Keys** → **Generate Test Key**
@@ -72,7 +82,7 @@ Complete step-by-step instructions to get your Kickd shoe store running locally 
 
 ---
 
-## Step 5 — Create Your `.env.local` File
+## Step 6 — Create Your `.env.local` File
 
 In the project root, create a file named `.env.local` (copy from `.env.local.example`):
 
@@ -86,6 +96,12 @@ SUPABASE_SERVICE_ROLE_KEY=your_service_role_key_here
 NEXT_PUBLIC_RAZORPAY_KEY_ID=rzp_test_xxxxxxxxxxxx
 RAZORPAY_KEY_SECRET=your_razorpay_secret_here
 
+# Resend — from resend.com/api-keys
+RESEND_API_KEY=re_xxxxxxxxxxxx
+# For testing use: onboarding@resend.dev
+# For production use: Kickd <orders@yourdomain.com>
+RESEND_FROM_EMAIL=onboarding@resend.dev
+
 # App URL
 NEXT_PUBLIC_BASE_URL=http://localhost:3000
 ```
@@ -94,7 +110,7 @@ NEXT_PUBLIC_BASE_URL=http://localhost:3000
 
 ---
 
-## Step 6 — Install Dependencies and Run Locally
+## Step 7 — Install Dependencies and Run Locally
 
 ```bash
 # In the project root (shoes-mart folder):
@@ -108,7 +124,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
-## Step 7 — Test the Full Flow
+## Step 8 — Test the Full Flow
 
 1. Browse the homepage — you should see featured products and category cards
 2. Click a product → select a size → add to cart
@@ -125,7 +141,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ---
 
-## Step 8 — Adding New Products (via Supabase Dashboard)
+## Step 9 — Adding New Products (via Supabase Dashboard)
 
 To add a new shoe later:
 
@@ -161,7 +177,7 @@ values (
 
 ---
 
-## Step 9 — Deploy to Vercel
+## Step 10 — Deploy to Vercel
 
 1. Push your code to GitHub (already done if you followed the setup)
 2. Go to [vercel.com](https://vercel.com) → **New Project** → Import from GitHub → select `shoes-mart`
@@ -174,7 +190,7 @@ Your store is now live! 🎉
 
 ---
 
-## Step 10 — Enable Razorpay Live Mode (when ready to accept real payments)
+## Step 11 — Enable Razorpay Live Mode (when ready to accept real payments)
 
 1. Complete Razorpay KYC in the dashboard
 2. Go to **Settings → API Keys** → Generate **Live** Key
@@ -197,6 +213,8 @@ Your store is now live! 🎉
 | `SUPABASE_SERVICE_ROLE_KEY` | Supabase → Settings → API → service_role | **No** (server only) |
 | `NEXT_PUBLIC_RAZORPAY_KEY_ID` | Razorpay → Settings → API Keys → Key ID | Yes |
 | `RAZORPAY_KEY_SECRET` | Razorpay → Settings → API Keys → Key Secret | **No** (server only) |
+| `RESEND_API_KEY` | resend.com → API Keys | **No** (server only) |
+| `RESEND_FROM_EMAIL` | Your verified sender address | **No** (server only) |
 | `NEXT_PUBLIC_BASE_URL` | Your domain / localhost | Yes |
 
 ---

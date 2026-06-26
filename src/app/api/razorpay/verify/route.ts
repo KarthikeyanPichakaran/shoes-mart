@@ -4,6 +4,7 @@ import { createServerClient } from '@supabase/ssr'
 import { createClient } from '@supabase/supabase-js'
 import { cookies } from 'next/headers'
 import { calculateShipping } from '@/lib/utils'
+import { sendOrderConfirmation } from '@/lib/email'
 import type { ShippingAddress } from '@/types'
 
 interface CartItemInput {
@@ -76,6 +77,7 @@ export async function POST(request: Request) {
     }
 
     const priceMap = Object.fromEntries(products.map((p) => [p.id, p.price]))
+    const nameMap = Object.fromEntries(products.map((p) => [p.id, p.name]))
 
     let subtotal = 0
     for (const item of cart_items) {
@@ -118,6 +120,18 @@ export async function POST(request: Request) {
 
     // Clear DB cart for this user (best-effort)
     await supabaseAdmin.from('cart_items').delete().eq('user_id', user.id)
+
+    // Send order confirmation email (best-effort — never block the response)
+    sendOrderConfirmation({
+      to: user.email!,
+      orderId: order.id,
+      orderItems,
+      productNames: nameMap,
+      shippingAddress: shipping_address,
+      subtotal,
+      shippingAmount,
+      totalAmount,
+    }).catch((err) => console.error('Email send failed:', err))
 
     return NextResponse.json({ order_id: order.id })
   } catch (err) {
