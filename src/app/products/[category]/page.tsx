@@ -1,3 +1,4 @@
+import { Suspense } from 'react'
 import { createClient } from '@/lib/supabase/server'
 import { notFound } from 'next/navigation'
 import ProductGrid from '@/components/products/ProductGrid'
@@ -70,11 +71,13 @@ export default async function CategoryPage({ params, searchParams }: PageProps) 
         )}
       </div>
 
-      <ProductFilters
-        totalCount={products?.length ?? 0}
-        showCategoryFilter
-        activeCategory={params.category}
-      />
+      <Suspense fallback={null}>
+        <ProductFilters
+          totalCount={products?.length ?? 0}
+          showCategoryFilter
+          activeCategory={params.category}
+        />
+      </Suspense>
 
       <ProductGrid
         products={products ?? []}
