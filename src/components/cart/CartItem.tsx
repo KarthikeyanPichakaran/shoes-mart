@@ -52,7 +52,8 @@ export default function CartItem({ item }: CartItemProps) {
           <div className="flex items-center border border-gray-200 rounded-full overflow-hidden">
             <button
               onClick={() => updateQuantity(product.id, size, quantity - 1)}
-              className="p-1.5 hover:bg-gray-50 text-gray-500 hover:text-red-600 transition-colors"
+              disabled={quantity === 1}
+              className="p-1.5 hover:bg-gray-50 text-gray-500 hover:text-red-600 transition-colors disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-gray-500"
               aria-label="Decrease quantity"
             >
               <Minus className="h-3.5 w-3.5" />
