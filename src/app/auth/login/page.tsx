@@ -3,8 +3,15 @@
 import { Suspense, useState } from 'react'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
+import { ShoppingBag, Package, User } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import Button from '@/components/ui/Button'
+
+const CONTEXT: Record<string, { icon: React.ElementType; msg: string }> = {
+  '/orders':   { icon: Package,     msg: 'Sign in to view your order history.' },
+  '/profile':  { icon: User,        msg: 'Sign in to manage your profile.' },
+  '/checkout': { icon: ShoppingBag, msg: 'Sign in to complete your purchase.' },
+}
 
 function LoginForm() {
   const [email, setEmail] = useState('')
@@ -16,6 +23,8 @@ function LoginForm() {
   const searchParams = useSearchParams()
   const redirect = searchParams.get('redirect') ?? '/'
 
+  const ctx = CONTEXT[redirect] ?? null
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
@@ -25,7 +34,16 @@ function LoginForm() {
 
     try {
       const supabase = createClient()
-      const { error } = await supabase.auth.signInWithPassword({ email, password })
+
+      // 15-second timeout guard
+      const result = await Promise.race([
+        supabase.auth.signInWithPassword({ email, password }),
+        new Promise<never>((_, reject) =>
+          setTimeout(() => reject(new Error('timeout')), 15000)
+        ),
+      ])
+
+      const { error } = result as Awaited<ReturnType<typeof supabase.auth.signInWithPassword>>
 
       if (error) {
         const msg = error.message.toLowerCase()
@@ -41,9 +59,15 @@ function LoginForm() {
         return
       }
 
+      // Successful login — hard redirect so server picks up the new session cookies
       window.location.href = redirect
-    } catch {
-      setError('Connection error. Please check your internet connection and try again.')
+    } catch (err: any) {
+      const isTimeout = err?.message === 'timeout'
+      setError(
+        isTimeout
+          ? 'Request timed out. Check your connection and try again.'
+          : 'Connection error. Check your internet connection and try again.'
+      )
       setLoading(false)
     }
   }
@@ -66,7 +90,15 @@ function LoginForm() {
             Shoe-Mart<span className="text-red-600">.</span>
           </Link>
           <h1 className="text-2xl font-black text-gray-900 mt-4 mb-1">Welcome back</h1>
-          <p className="text-sm text-gray-400">Log in to your Shoe-Mart account</p>
+
+          {ctx ? (
+            <div className="inline-flex items-center gap-2 mt-2 bg-red-50 border border-red-100 text-red-700 text-sm px-4 py-2 rounded-full">
+              <ctx.icon className="h-4 w-4 shrink-0" />
+              {ctx.msg}
+            </div>
+          ) : (
+            <p className="text-sm text-gray-400">Log in to your Shoe-Mart account</p>
+          )}
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">

@@ -1,34 +1,28 @@
 import { NextResponse } from 'next/server'
-import { createServerClient } from '@supabase/ssr'
-import { cookies } from 'next/headers'
+import { createClient } from '@/lib/supabase/server'
+import { getAdminClient } from '@/lib/supabase/admin'
 
 export async function PATCH(request: Request) {
   try {
-    const cookieStore = cookies()
-    const supabase = createServerClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-      {
-        cookies: {
-          getAll() { return cookieStore.getAll() },
-          setAll() {},
-        },
-      }
-    )
-
+    // Verify identity with the user's session
+    const supabase = createClient()
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
     const { full_name, phone } = await request.json()
 
-    const { error } = await supabase
+    // Use service-role client so RLS never blocks the upsert
+    const admin = getAdminClient()
+    const { error } = await admin
       .from('profiles')
-      .upsert({ id: user.id, full_name: full_name?.trim() || null, phone: phone?.trim() || null })
+      .upsert(
+        { id: user.id, full_name: full_name?.trim() || null, phone: phone?.trim() || null },
+        { onConflict: 'id' }
+      )
 
     if (error) return NextResponse.json({ error: error.message }, { status: 500 })
-
     return NextResponse.json({ success: true })
-  } catch {
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
+  } catch (err: any) {
+    return NextResponse.json({ error: err?.message ?? 'Internal server error' }, { status: 500 })
   }
 }
