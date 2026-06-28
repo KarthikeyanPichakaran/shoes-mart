@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
-import { razorpay } from '@/lib/razorpay'
+import { getRazorpay } from '@/lib/razorpay'
 import { calculateShipping } from '@/lib/utils'
 
 interface CartItemInput {
@@ -63,7 +63,7 @@ export async function POST(request: Request) {
     const totalAmount = subtotal + shippingAmount
 
     // Create Razorpay order (amount in paise)
-    const order = await razorpay.orders.create({
+    const order = await getRazorpay().orders.create({
       amount: Math.round(totalAmount * 100),
       currency: 'INR',
       receipt: `rcpt_${Date.now()}`,

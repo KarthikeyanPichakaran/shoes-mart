@@ -1,4 +1,4 @@
-import { resend, FROM_EMAIL } from './resend'
+import { getResend, FROM_EMAIL } from './resend'
 import { formatPrice, calculateShipping, SHIPPING_FEE } from './utils'
 import type { ShippingAddress } from '@/types'
 
@@ -167,7 +167,7 @@ export async function sendOrderConfirmation({
 </body>
 </html>`
 
-  await resend.emails.send({
+  await getResend().emails.send({
     from: FROM_EMAIL,
     to,
     subject: `Order Confirmed — #${shortId} 🎉`,
