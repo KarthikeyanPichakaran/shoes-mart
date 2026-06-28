@@ -73,10 +73,13 @@ export default function Header() {
   useEffect(() => { setMenuOpen(false); setDropdownOpen(false) }, [pathname])
 
   const handleSignOut = async () => {
+    setDropdownOpen(false)
+    setMenuOpen(false)
+    setUserEmail(null)
+    setUserName(null)
     const supabase = createClient()
     await supabase.auth.signOut()
-    router.push('/')
-    router.refresh()
+    window.location.href = '/'
   }
 
   const initials = userName

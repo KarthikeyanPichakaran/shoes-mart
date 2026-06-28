@@ -23,8 +23,7 @@ export async function PATCH(request: Request) {
 
     const { error } = await supabase
       .from('profiles')
-      .update({ full_name: full_name?.trim() || null, phone: phone?.trim() || null })
-      .eq('id', user.id)
+      .upsert({ id: user.id, full_name: full_name?.trim() || null, phone: phone?.trim() || null })
 
     if (error) return NextResponse.json({ error: error.message }, { status: 500 })
 
