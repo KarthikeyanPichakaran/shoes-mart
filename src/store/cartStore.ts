@@ -9,6 +9,7 @@ interface CartStore {
   addItem: (product: Product, size: number, quantity?: number) => void
   removeItem: (product_id: string, size: number) => void
   updateQuantity: (product_id: string, size: number, quantity: number) => void
+  setItems: (items: LocalCartItem[]) => void
   clearCart: () => void
   getItemCount: () => number
   getSubtotal: () => number
@@ -64,6 +65,8 @@ export const useCartStore = create<CartStore>()(
         }))
       },
 
+      setItems: (newItems) => set({ items: newItems }),
+
       clearCart: () => set({ items: [] }),
 
       getItemCount: () =>
@@ -76,7 +79,7 @@ export const useCartStore = create<CartStore>()(
         ),
     }),
     {
-      name: 'kickd-cart',
+      name: 'shoe-mart-cart',
     }
   )
 )

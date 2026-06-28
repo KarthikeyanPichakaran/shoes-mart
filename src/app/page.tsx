@@ -2,11 +2,13 @@ import { createClient } from '@/lib/supabase/server'
 import Hero from '@/components/home/Hero'
 import FeaturedProducts from '@/components/home/FeaturedProducts'
 import CategoryShowcase from '@/components/home/CategoryShowcase'
+import GuestWelcome from '@/components/home/GuestWelcome'
 
 export default async function HomePage() {
   const supabase = createClient()
 
-  const [{ data: products }, { data: categories }] = await Promise.all([
+  const [{ data: { user } }, { data: products }, { data: categories }] = await Promise.all([
+    supabase.auth.getUser(),
     supabase
       .from('products')
       .select('*, categories(*)')
@@ -19,6 +21,7 @@ export default async function HomePage() {
   return (
     <>
       <Hero />
+      {!user && <GuestWelcome />}
       <FeaturedProducts products={products ?? []} />
       <CategoryShowcase categories={categories ?? []} />
     </>

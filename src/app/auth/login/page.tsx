@@ -11,6 +11,8 @@ function LoginForm() {
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [needsConfirmation, setNeedsConfirmation] = useState(false)
+  const [resendSent, setResendSent] = useState(false)
   const searchParams = useSearchParams()
   const redirect = searchParams.get('redirect') ?? '/'
 
@@ -18,17 +20,42 @@ function LoginForm() {
     e.preventDefault()
     setLoading(true)
     setError(null)
+    setNeedsConfirmation(false)
+    setResendSent(false)
 
-    const supabase = createClient()
-    const { error } = await supabase.auth.signInWithPassword({ email, password })
+    try {
+      const supabase = createClient()
+      const { error } = await supabase.auth.signInWithPassword({ email, password })
 
-    if (error) {
-      setError(error.message)
+      if (error) {
+        const msg = error.message.toLowerCase()
+        if (msg.includes('email not confirmed') || msg.includes('not confirmed')) {
+          setNeedsConfirmation(true)
+          setError('Please confirm your email address before signing in.')
+        } else if (msg.includes('invalid login credentials') || msg.includes('invalid email or password')) {
+          setError('Incorrect email or password. Please try again.')
+        } else {
+          setError(error.message)
+        }
+        setLoading(false)
+        return
+      }
+
+      window.location.href = redirect
+    } catch {
+      setError('Connection error. Please check your internet connection and try again.')
       setLoading(false)
-      return
     }
+  }
 
-    window.location.href = redirect
+  const handleResend = async () => {
+    try {
+      const supabase = createClient()
+      await supabase.auth.resend({ type: 'signup', email })
+      setResendSent(true)
+    } catch {
+      // silently ignore
+    }
   }
 
   return (
@@ -39,7 +66,7 @@ function LoginForm() {
             Shoe-Mart<span className="text-red-600">.</span>
           </Link>
           <h1 className="text-2xl font-black text-gray-900 mt-4 mb-1">Welcome back</h1>
-          <p className="text-sm text-gray-400">Log in to your account</p>
+          <p className="text-sm text-gray-400">Log in to your Shoe-Mart account</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -76,8 +103,22 @@ function LoginForm() {
           </div>
 
           {error && (
-            <div className="bg-red-50 border border-red-100 text-red-600 text-sm rounded-xl px-4 py-3">
-              {error}
+            <div className="bg-red-50 border border-red-100 rounded-xl px-4 py-3 space-y-1.5">
+              <p className="text-red-600 text-sm">{error}</p>
+              {needsConfirmation && !resendSent && (
+                <button
+                  type="button"
+                  onClick={handleResend}
+                  className="text-xs font-semibold text-red-700 underline underline-offset-2 hover:text-red-900"
+                >
+                  Resend confirmation email →
+                </button>
+              )}
+              {resendSent && (
+                <p className="text-xs font-medium text-green-700">
+                  Confirmation email sent! Check your inbox.
+                </p>
+              )}
             </div>
           )}
 
@@ -89,7 +130,7 @@ function LoginForm() {
         <p className="text-center text-sm text-gray-400 mt-6">
           Don&apos;t have an account?{' '}
           <Link href="/auth/signup" className="text-red-600 font-semibold hover:underline">
-            Sign up
+            Create one free
           </Link>
         </p>
       </div>

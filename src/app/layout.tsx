@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
+import CartSyncer from '@/components/CartSyncer'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -27,6 +28,7 @@ export default function RootLayout({
         className={`${inter.className} bg-white text-gray-900`}
         suppressHydrationWarning
       >
+        <CartSyncer />
         <Header />
         <main className="min-h-screen">{children}</main>
         <Footer />
