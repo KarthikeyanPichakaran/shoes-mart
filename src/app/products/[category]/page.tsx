@@ -31,7 +31,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   return {
     title: category.name,
-    description: category.description ?? `Shop all ${category.name} at Kickd.`,
+    description: category.description ?? `Shop all ${category.name} at Shoe-Mart.`,
   }
 }
 

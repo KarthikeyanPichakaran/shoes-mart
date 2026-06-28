@@ -74,7 +74,7 @@ export async function sendOrderConfirmation({
           <tr>
             <td style="background:#111827;padding:28px 32px;">
               <p style="margin:0;font-size:24px;font-weight:900;color:#ffffff;letter-spacing:-0.5px;">
-                Kickd<span style="color:#dc2626;">.</span>
+                Shoe-Mart<span style="color:#dc2626;">.</span>
               </p>
             </td>
           </tr>
@@ -155,7 +155,7 @@ export async function sendOrderConfirmation({
           <tr>
             <td style="background:#f9fafb;padding:20px 32px;border-top:1px solid #f3f4f6;text-align:center;">
               <p style="margin:0;font-size:12px;color:#9ca3af;">
-                &copy; ${new Date().getFullYear()} Kickd. Payments secured by Razorpay.
+                &copy; ${new Date().getFullYear()} Shoe-Mart. Payments secured by Razorpay.
               </p>
             </td>
           </tr>

@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   return {
     title: product.name,
-    description: product.description ?? `Buy ${product.name} at Kickd.`,
+    description: product.description ?? `Buy ${product.name} at Shoe-Mart.`,
   }
 }
 

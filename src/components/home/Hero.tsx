@@ -9,17 +9,17 @@ export default function Hero() {
       <div className="absolute -right-32 -top-32 h-96 w-96 rounded-full bg-red-600/10 blur-3xl" />
       <div className="absolute -left-32 -bottom-32 h-96 w-96 rounded-full bg-red-600/5 blur-3xl" />
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-36">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 lg:py-36">
         <div className="max-w-2xl">
-          <span className="inline-block bg-red-600 text-white text-xs font-semibold tracking-widest uppercase px-3 py-1 rounded-full mb-6">
+          <span className="inline-block bg-red-600 text-white text-xs font-semibold tracking-widest uppercase px-3 py-1 rounded-full mb-5 sm:mb-6">
             New Collection
           </span>
-          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black tracking-tight leading-none mb-6">
+          <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black tracking-tight leading-none mb-5 sm:mb-6">
             Step Into
             <br />
             <span className="text-red-500">Your Style</span>
           </h1>
-          <p className="text-lg sm:text-xl text-gray-300 mb-10 max-w-lg leading-relaxed">
+          <p className="text-base sm:text-xl text-gray-300 mb-8 sm:mb-10 max-w-lg leading-relaxed">
             Premium sneakers, running shoes, and boots — crafted for the streets
             and beyond. Free shipping on orders over ₹999.
           </p>

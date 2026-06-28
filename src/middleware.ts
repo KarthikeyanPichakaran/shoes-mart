@@ -1,7 +1,7 @@
 import { createServerClient } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
-const PROTECTED_PATHS = ['/checkout', '/orders']
+const PROTECTED_PATHS = ['/checkout', '/orders', '/profile']
 
 type CookieToSet = { name: string; value: string; options?: object }
 

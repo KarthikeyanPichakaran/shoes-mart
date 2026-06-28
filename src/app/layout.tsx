@@ -8,11 +8,11 @@ const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: {
-    default: 'Kickd — Premium Footwear',
-    template: '%s | Kickd',
+    default: 'Shoe-Mart — Premium Footwear',
+    template: '%s | Shoe-Mart',
   },
   description:
-    'Shop the latest sneakers, running shoes, and boots. Premium footwear for every occasion.',
+    'Shop the latest sneakers, running shoes, and boots at Shoe-Mart. Premium footwear for every occasion.',
   keywords: ['sneakers', 'running shoes', 'boots', 'footwear', 'shoes'],
 }
 

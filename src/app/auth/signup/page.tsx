@@ -70,10 +70,10 @@ export default function SignupPage() {
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
           <Link href="/" className="text-3xl font-black text-gray-900">
-            Kickd<span className="text-red-600">.</span>
+            Shoe-Mart<span className="text-red-600">.</span>
           </Link>
           <h1 className="text-2xl font-black text-gray-900 mt-4 mb-1">Create an account</h1>
-          <p className="text-sm text-gray-400">Join Kickd to start shopping</p>
+          <p className="text-sm text-gray-400">Join Shoe-Mart to start shopping</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
