@@ -30,11 +30,7 @@ Complete step-by-step instructions to get your Kickd shoe store running locally 
 
 1. In your Supabase dashboard, go to **SQL Editor**
 2. Open the file `supabase/schema.sql` from this project
-3. **Before running**, scroll to the bottom and find this line in the `do $$` block:
-   ```
-   base_url text := 'https://YOUR_SUPABASE_URL.supabase.co/...';
-   ```
-   Replace `YOUR_SUPABASE_URL` with your actual project reference (the part before `.supabase.co`)
+3. The Supabase project URL is already pre-filled in the seed block — no manual replacement needed
 4. Click **Run** — all tables, indexes, triggers, RLS policies, and seed data will be created
 
 ---

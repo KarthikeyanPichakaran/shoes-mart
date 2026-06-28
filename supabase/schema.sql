@@ -223,7 +223,7 @@ insert into public.categories (name, slug, description) values
 
 do $$
 declare
-  base_url text := 'https://YOUR_SUPABASE_URL.supabase.co/storage/v1/object/public/product-images';
+  base_url text := 'https://lylxzgcuediwbpwfnkbe.supabase.co/storage/v1/object/public/product-images';
   cat_sneakers uuid;
   cat_running  uuid;
   cat_boots    uuid;
