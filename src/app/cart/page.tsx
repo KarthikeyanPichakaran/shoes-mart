@@ -12,10 +12,7 @@ export default function CartPage() {
   const [mounted, setMounted] = useState(false)
   const items = useCartStore((state) => state.items)
   const getSubtotal = useCartStore((state) => state.getSubtotal)
-  const getItemCount = useCartStore((state) => state.getItemCount)
   const { user } = useAuth()
-
-  const totalQty = mounted ? getItemCount() : 0
 
   useEffect(() => {
     setMounted(true)
@@ -56,7 +53,7 @@ export default function CartPage() {
       <h1 className="text-3xl font-black text-gray-900 mb-8">
         Shopping Cart
         <span className="ml-3 text-base font-normal text-gray-400">
-          ({totalQty} {totalQty === 1 ? 'item' : 'items'})
+          ({items.length} {items.length === 1 ? 'item' : 'items'})
         </span>
       </h1>
 

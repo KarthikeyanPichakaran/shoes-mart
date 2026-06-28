@@ -23,7 +23,7 @@ export default function Header() {
   const dropdownRef = useRef<HTMLDivElement>(null)
   const router = useRouter()
   const pathname = usePathname()
-  const itemCount = useCartStore((state) => state.getItemCount())
+  const itemCount = useCartStore((state) => state.items.length)
 
   useEffect(() => {
     setMounted(true)
