@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { ShoppingCart } from 'lucide-react'
 import { useCartStore } from '@/store/cartStore'
-import { useAuth } from '@/hooks/useAuth'
 import CartItem from '@/components/cart/CartItem'
 import CartSummary from '@/components/cart/CartSummary'
 
@@ -12,7 +11,6 @@ export default function CartPage() {
   const [mounted, setMounted] = useState(false)
   const items = useCartStore((state) => state.items)
   const getSubtotal = useCartStore((state) => state.getSubtotal)
-  const { user } = useAuth()
 
   useEffect(() => {
     setMounted(true)
@@ -70,10 +68,7 @@ export default function CartPage() {
 
         {/* Summary */}
         <div>
-          <CartSummary
-            subtotal={getSubtotal()}
-            isAuthenticated={!!user}
-          />
+          <CartSummary subtotal={getSubtotal()} />
         </div>
       </div>
     </div>

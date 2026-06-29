@@ -1,27 +1,16 @@
 'use client'
 
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 import { formatPrice, calculateShipping, FREE_SHIPPING_THRESHOLD, SHIPPING_FEE } from '@/lib/utils'
 import Button from '@/components/ui/Button'
 
 interface CartSummaryProps {
   subtotal: number
-  isAuthenticated: boolean
 }
 
-export default function CartSummary({ subtotal, isAuthenticated }: CartSummaryProps) {
+export default function CartSummary({ subtotal }: CartSummaryProps) {
   const shippingAmount = calculateShipping(subtotal)
   const total = subtotal + shippingAmount
-  const router = useRouter()
-
-  const handleCheckout = () => {
-    if (isAuthenticated) {
-      router.push('/checkout')
-    } else {
-      router.push('/auth/login?redirect=/checkout')
-    }
-  }
 
   return (
     <div className="bg-gray-50 rounded-2xl p-6 sticky top-24">
@@ -56,14 +45,11 @@ export default function CartSummary({ subtotal, isAuthenticated }: CartSummaryPr
         </div>
       </div>
 
-      <Button
-        fullWidth
-        size="lg"
-        onClick={handleCheckout}
-        className="mt-6"
-      >
-        {isAuthenticated ? 'Proceed to Checkout' : 'Log in to Checkout'}
-      </Button>
+      <Link href="/checkout" className="block mt-6">
+        <Button fullWidth size="lg">
+          Checkout
+        </Button>
+      </Link>
 
       <Link
         href="/products"
